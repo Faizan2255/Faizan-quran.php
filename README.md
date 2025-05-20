@@ -1,1 +1,0 @@
-# Faizan-quran.php
