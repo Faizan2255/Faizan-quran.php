@@ -1,0 +1,716 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Majid - Faizan Innovations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; transition: background-color 0.3s, color 0.3s; background-color: #1a1a2e; color: #e0e0e0; }
+        .light-theme { background-color: #f4f4f9; color: #212529; }
+        .dark-theme { background-color: #1a1a2e; color: #e0e0e0; }
+        .quran-text { font-family: 'Noto Naskh Arabic', serif; font-size: 1.8rem; line-height: 2.5; text-align: right; margin-bottom: 1rem; color: #d4af37; }
+        .translation-text { font-size: 1.2rem; line-height: 2; text-align: left; color: #b0b0b0; }
+        .dua-text { font-family: 'Noto Naskh Arabic', serif; font-size: 1.6rem; line-height: 2.2; text-align: right; margin-bottom: 1rem; color: #d4af37; }
+        .dua-translation { font-size: 1.1rem; line-height: 1.8; text-align: left; color: #b0b0b0; }
+        .surah-header, .dua-header { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px); 
+            color: white; 
+            padding: 2rem; 
+            border-radius: 1rem; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3); 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .ayah-card { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px); 
+            padding: 1.5rem; 
+            border-radius: 1rem; 
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 1rem;
+            animation: fadeIn 0.8s;
+        }
+        .ayah-number { 
+            display: inline-block; 
+            width: 2.5rem; 
+            height: 2.5rem; 
+            line-height: 2.5rem; 
+            text-align: center; 
+            background-color: #d4af37; 
+            color: #1a1a2e; 
+            border-radius: 50%; 
+            margin-left: 0.5rem; 
+            font-weight: bold;
+        }
+        .navbar { background: linear-gradient(45deg, #1e3a8a, #3b82f6); }
+        .nav-link { color: white !important; transition: color 0.3s; }
+        .nav-link:hover { color: #d4af37 !important; }
+        .theme-toggle { cursor: pointer; font-size: 1.5rem; }
+        .audio-player { margin: 1rem 0; }
+        audio { width: 100%; background: #1a1a2e; border-radius: 5px; }
+        .play-btn { 
+            background: linear-gradient(45deg, #d4af37, #f1c40f); 
+            border: none; 
+            color: #1a1a2e; 
+            font-weight: bold; 
+            transition: transform 0.2s;
+        }
+        .play-btn:hover { 
+            background: linear-gradient(45deg, #f1c40f, #d4af37); 
+            transform: scale(1.05);
+        }
+        footer { 
+            background: linear-gradient(45deg, #1a1a2e, #2c2c44); 
+            color: white; 
+            padding: 2rem; 
+            text-align: center; 
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
+        }
+        .footer-text { margin: 0; font-size: 1.1rem; }
+        .footer-link { color: #3b82f6; text-decoration: none; margin: 0 1rem; }
+        .footer-link:hover { text-decoration: underline; color: #d4af37; }
+        .surah-card, .dua-card, .ayah-card { animation: fadeIn 0.8s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .btn-primary { 
+            background: linear-gradient(45deg, #1e3a8a, #3b82f6); 
+            border: none; 
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(45deg, #1e40af, #2563eb); 
+            transform: scale(1.05);
+        }
+        .form-select { 
+            background: #2c2c44; 
+            color: white; 
+            border: 1px solid #3b82f6; 
+            transition: border-color 0.3s;
+        }
+        .form-select:hover { border-color: #d4af37; }
+        .form-label { color: #d4af37; }
+        .tab-content { padding: 20px; }
+    </style>
+</head>
+<body class="dark-theme">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Quran Majid</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="?section=quran">Quran</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="?section=duas">Duas</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link theme-toggle" onclick="toggleTheme()">☀️</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4 animate__animated animate__fadeIn">Quran Majid</h1>
+        <div class="tab-content">
+                            <div class="row mb-4">
+                    <div class="col-md-6">
+                        <form action="quran.php?section=quran" method="GET">
+                            <input type="hidden" name="section" value="quran">
+                            <label for="surah" class="form-label">Select Surah:</label>
+                            <select id="surah" name="surah" class="form-select" onchange="this.form.submit()">
+                                                                    <option value="1" selected>
+                                        1. الفاتحة (The Opening)                                    </option>
+                                                                    <option value="2" >
+                                        2. البقرة (The Cow)                                    </option>
+                                                                    <option value="3" >
+                                        3. آل عمران (Family of Imran)                                    </option>
+                                                                    <option value="4" >
+                                        4. النساء (The Women)                                    </option>
+                                                                    <option value="5" >
+                                        5. المائدة (The Table)                                    </option>
+                                                                    <option value="6" >
+                                        6. الأنعام (The Cattle)                                    </option>
+                                                                    <option value="7" >
+                                        7. الأعراف (The Heights)                                    </option>
+                                                                    <option value="8" >
+                                        8. الأنفال (The Spoils of War)                                    </option>
+                                                                    <option value="9" >
+                                        9. التوبة (The Repentance)                                    </option>
+                                                                    <option value="10" >
+                                        10. يونس (Jonah)                                    </option>
+                                                                    <option value="11" >
+                                        11. هود (Hud)                                    </option>
+                                                                    <option value="12" >
+                                        12. يوسف (Joseph)                                    </option>
+                                                                    <option value="13" >
+                                        13. الرعد (The Thunder)                                    </option>
+                                                                    <option value="14" >
+                                        14. إبراهيم (Abraham)                                    </option>
+                                                                    <option value="15" >
+                                        15. الحجر (The Rocky Tract)                                    </option>
+                                                                    <option value="16" >
+                                        16. النحل (The Bee)                                    </option>
+                                                                    <option value="17" >
+                                        17. الإسراء (The Night Journey)                                    </option>
+                                                                    <option value="18" >
+                                        18. الكهف (The Cave)                                    </option>
+                                                                    <option value="19" >
+                                        19. مريم (Mary)                                    </option>
+                                                                    <option value="20" >
+                                        20. طه (Ta-Ha)                                    </option>
+                                                                    <option value="21" >
+                                        21. الأنبياء (The Prophets)                                    </option>
+                                                                    <option value="22" >
+                                        22. الحج (The Pilgrimage)                                    </option>
+                                                                    <option value="23" >
+                                        23. المؤمنون (The Believers)                                    </option>
+                                                                    <option value="24" >
+                                        24. النور (The Light)                                    </option>
+                                                                    <option value="25" >
+                                        25. الفرقان (The Criterion)                                    </option>
+                                                                    <option value="26" >
+                                        26. الشعراء (The Poets)                                    </option>
+                                                                    <option value="27" >
+                                        27. النمل (The Ant)                                    </option>
+                                                                    <option value="28" >
+                                        28. القصص (The Stories)                                    </option>
+                                                                    <option value="29" >
+                                        29. العنكبوت (The Spider)                                    </option>
+                                                                    <option value="30" >
+                                        30. الروم (The Romans)                                    </option>
+                                                                    <option value="31" >
+                                        31. لقمان (Luqman)                                    </option>
+                                                                    <option value="32" >
+                                        32. السجدة (The Prostration)                                    </option>
+                                                                    <option value="33" >
+                                        33. الأحزاب (The Combined Forces)                                    </option>
+                                                                    <option value="34" >
+                                        34. سبإ (Sheba)                                    </option>
+                                                                    <option value="35" >
+                                        35. فاطر (The Originator)                                    </option>
+                                                                    <option value="36" >
+                                        36. يس (Ya-Sin)                                    </option>
+                                                                    <option value="37" >
+                                        37. الصافات (Those who set the Ranks)                                    </option>
+                                                                    <option value="38" >
+                                        38. ص (Sad)                                    </option>
+                                                                    <option value="39" >
+                                        39. الزمر (The Troops)                                    </option>
+                                                                    <option value="40" >
+                                        40. غافر (The Forgiver)                                    </option>
+                                                                    <option value="41" >
+                                        41. فصلت (Explained in Detail)                                    </option>
+                                                                    <option value="42" >
+                                        42. الشورى (The Consultation)                                    </option>
+                                                                    <option value="43" >
+                                        43. الزخرف (The Ornaments of Gold)                                    </option>
+                                                                    <option value="44" >
+                                        44. الدخان (The Smoke)                                    </option>
+                                                                    <option value="45" >
+                                        45. الجاثية (The Crouching)                                    </option>
+                                                                    <option value="46" >
+                                        46. الأحقاف (The Wind-Curved Sandhills)                                    </option>
+                                                                    <option value="47" >
+                                        47. محمد (Muhammad)                                    </option>
+                                                                    <option value="48" >
+                                        48. الفتح (The Victory)                                    </option>
+                                                                    <option value="49" >
+                                        49. الحجرات (The Rooms)                                    </option>
+                                                                    <option value="50" >
+                                        50. ق (Qaf)                                    </option>
+                                                                    <option value="51" >
+                                        51. الذاريات (The Winnowing Winds)                                    </option>
+                                                                    <option value="52" >
+                                        52. الطور (The Mount)                                    </option>
+                                                                    <option value="53" >
+                                        53. النجم (The Star)                                    </option>
+                                                                    <option value="54" >
+                                        54. القمر (The Moon)                                    </option>
+                                                                    <option value="55" >
+                                        55. الرحمن (The Beneficent)                                    </option>
+                                                                    <option value="56" >
+                                        56. الواقعة (The Inevitable)                                    </option>
+                                                                    <option value="57" >
+                                        57. الحديد (The Iron)                                    </option>
+                                                                    <option value="58" >
+                                        58. المجادلة (The Pleading Woman)                                    </option>
+                                                                    <option value="59" >
+                                        59. الحشر (The Exile)                                    </option>
+                                                                    <option value="60" >
+                                        60. الممتحنة (The Woman to be Examined)                                    </option>
+                                                                    <option value="61" >
+                                        61. الصف (The Ranks)                                    </option>
+                                                                    <option value="62" >
+                                        62. الجمعة (The Friday)                                    </option>
+                                                                    <option value="63" >
+                                        63. المنافقون (The Hypocrites)                                    </option>
+                                                                    <option value="64" >
+                                        64. التغابن (The Mutual Disillusion)                                    </option>
+                                                                    <option value="65" >
+                                        65. الطلاق (The Divorce)                                    </option>
+                                                                    <option value="66" >
+                                        66. التحريم (The Prohibition)                                    </option>
+                                                                    <option value="67" >
+                                        67. الملك (The Sovereignty)                                    </option>
+                                                                    <option value="68" >
+                                        68. القلم (The Pen)                                    </option>
+                                                                    <option value="69" >
+                                        69. الحاقة (The Reality)                                    </option>
+                                                                    <option value="70" >
+                                        70. المعارج (The Ascending Stairways)                                    </option>
+                                                                    <option value="71" >
+                                        71. نوح (Noah)                                    </option>
+                                                                    <option value="72" >
+                                        72. الجن (The Jinn)                                    </option>
+                                                                    <option value="73" >
+                                        73. المزمل (The Enshrouded One)                                    </option>
+                                                                    <option value="74" >
+                                        74. المدثر (The Cloaked One)                                    </option>
+                                                                    <option value="75" >
+                                        75. القيامة (The Resurrection)                                    </option>
+                                                                    <option value="76" >
+                                        76. الإنسان (The Man)                                    </option>
+                                                                    <option value="77" >
+                                        77. المرسلات (The Emissaries)                                    </option>
+                                                                    <option value="78" >
+                                        78. النبأ (The Announcement)                                    </option>
+                                                                    <option value="79" >
+                                        79. النازعات (Those who drag forth)                                    </option>
+                                                                    <option value="80" >
+                                        80. عبس (He Frowned)                                    </option>
+                                                                    <option value="81" >
+                                        81. التكوير (The Overthrowing)                                    </option>
+                                                                    <option value="82" >
+                                        82. الإنفطار (The Cleaving)                                    </option>
+                                                                    <option value="83" >
+                                        83. المطففين (The Defrauding)                                    </option>
+                                                                    <option value="84" >
+                                        84. الإنشقاق (The Splitting Open)                                    </option>
+                                                                    <option value="85" >
+                                        85. البروج (The Mansions of the Stars)                                    </option>
+                                                                    <option value="86" >
+                                        86. الطارق (The Nightcommer)                                    </option>
+                                                                    <option value="87" >
+                                        87. الأعلى (The Most High)                                    </option>
+                                                                    <option value="88" >
+                                        88. الغاشية (The Overwhelming)                                    </option>
+                                                                    <option value="89" >
+                                        89. الفجر (The Dawn)                                    </option>
+                                                                    <option value="90" >
+                                        90. البلد (The City)                                    </option>
+                                                                    <option value="91" >
+                                        91. الشمس (The Sun)                                    </option>
+                                                                    <option value="92" >
+                                        92. الليل (The Night)                                    </option>
+                                                                    <option value="93" >
+                                        93. الضحى (The Morning Hours)                                    </option>
+                                                                    <option value="94" >
+                                        94. الشرح (The Relief)                                    </option>
+                                                                    <option value="95" >
+                                        95. التين (The Fig)                                    </option>
+                                                                    <option value="96" >
+                                        96. العلق (The Clot)                                    </option>
+                                                                    <option value="97" >
+                                        97. القدر (The Power)                                    </option>
+                                                                    <option value="98" >
+                                        98. البينة (The Clear Proof)                                    </option>
+                                                                    <option value="99" >
+                                        99. الزلزلة (The Earthquake)                                    </option>
+                                                                    <option value="100" >
+                                        100. العاديات (The Courser)                                    </option>
+                                                                    <option value="101" >
+                                        101. القارعة (The Calamity)                                    </option>
+                                                                    <option value="102" >
+                                        102. التكاثر (The Rivalry)                                    </option>
+                                                                    <option value="103" >
+                                        103. العصر (The Declining Day)                                    </option>
+                                                                    <option value="104" >
+                                        104. الهمزة (The Traducer)                                    </option>
+                                                                    <option value="105" >
+                                        105. الفيل (The Elephant)                                    </option>
+                                                                    <option value="106" >
+                                        106. قريش (Quraysh)                                    </option>
+                                                                    <option value="107" >
+                                        107. الماعون (The Small Kindnesses)                                    </option>
+                                                                    <option value="108" >
+                                        108. الكوثر (The Abundance)                                    </option>
+                                                                    <option value="109" >
+                                        109. الكافرون (The Disbelievers)                                    </option>
+                                                                    <option value="110" >
+                                        110. النصر (The Divine Support)                                    </option>
+                                                                    <option value="111" >
+                                        111. المسد (The Palm Fiber)                                    </option>
+                                                                    <option value="112" >
+                                        112. الإخلاص (The Sincerity)                                    </option>
+                                                                    <option value="113" >
+                                        113. الفلق (The Daybreak)                                    </option>
+                                                                    <option value="114" >
+                                        114. الناس (Mankind)                                    </option>
+                                                            </select>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form action="quran.php?section=quran" method="GET">
+                            <input type="hidden" name="section" value="quran">
+                            <input type="hidden" name="surah" value="1">
+                            <label for="lang" class="form-label">Select Translation:</label>
+                            <select id="lang" name="lang" class="form-select" onchange="this.form.submit()">
+                                                                    <option value="ar.uthmani" >
+                                        Arabic (Uthmani)                                    </option>
+                                                                    <option value="en.sahih" >
+                                        English (Sahih International)                                    </option>
+                                                                    <option value="ur.ahmedali" selected>
+                                        Urdu (Ahmed Ali)                                    </option>
+                                                                    <option value="hi.hindi" >
+                                        Hindi                                    </option>
+                                                                    <option value="fr.hamidullah" >
+                                        French (Hamidullah)                                    </option>
+                                                                    <option value="es.cortes" >
+                                        Spanish (Cortes)                                    </option>
+                                                                    <option value="de.aburida" >
+                                        German (Abu Rida)                                    </option>
+                                                                    <option value="tr.diyanet" >
+                                        Turkish (Diyanet)                                    </option>
+                                                                    <option value="ru.kuliev" >
+                                        Russian (Kuliev)                                    </option>
+                                                                    <option value="bn.bengali" >
+                                        Bengali                                    </option>
+                                                                    <option value="zh.jian" >
+                                        Chinese (Jian)                                    </option>
+                                                                    <option value="id.indonesian" >
+                                        Indonesian                                    </option>
+                                                                    <option value="ms.malay" >
+                                        Malay                                    </option>
+                                                                    <option value="sw.swahili" >
+                                        Swahili                                    </option>
+                                                                    <option value="pt.portuguese" >
+                                        Portuguese                                    </option>
+                                                                    <option value="it.italian" >
+                                        Italian                                    </option>
+                                                                    <option value="nl.dutch" >
+                                        Dutch                                    </option>
+                                                                    <option value="sv.swedish" >
+                                        Swedish                                    </option>
+                                                                    <option value="no.norwegian" >
+                                        Norwegian                                    </option>
+                                                                    <option value="da.danish" >
+                                        Danish                                    </option>
+                                                                    <option value="fi.finnish" >
+                                        Finnish                                    </option>
+                                                                    <option value="el.greek" >
+                                        Greek                                    </option>
+                                                                    <option value="he.hebrew" >
+                                        Hebrew                                    </option>
+                                                                    <option value="th.thai" >
+                                        Thai                                    </option>
+                                                                    <option value="vi.vietnamese" >
+                                        Vietnamese                                    </option>
+                                                                    <option value="ko.korean" >
+                                        Korean                                    </option>
+                                                                    <option value="ja.japanese" >
+                                        Japanese                                    </option>
+                                                                    <option value="pl.polish" >
+                                        Polish                                    </option>
+                                                                    <option value="cs.czech" >
+                                        Czech                                    </option>
+                                                                    <option value="hu.hungarian" >
+                                        Hungarian                                    </option>
+                                                                    <option value="ro.romanian" >
+                                        Romanian                                    </option>
+                                                                    <option value="sk.slovak" >
+                                        Slovak                                    </option>
+                                                                    <option value="sl.slovenian" >
+                                        Slovenian                                    </option>
+                                                                    <option value="hr.croatian" >
+                                        Croatian                                    </option>
+                                                                    <option value="bs.bosnian" >
+                                        Bosnian                                    </option>
+                                                                    <option value="sr.serbian" >
+                                        Serbian                                    </option>
+                                                                    <option value="bg.bulgarian" >
+                                        Bulgarian                                    </option>
+                                                                    <option value="uk.ukrainian" >
+                                        Ukrainian                                    </option>
+                                                                    <option value="fa.persian" >
+                                        Persian                                    </option>
+                                                                    <option value="ar.alashary" >
+                                        Arabic (Alashary)                                    </option>
+                                                                    <option value="sq.albanian" >
+                                        Albanian                                    </option>
+                                                                    <option value="am.amharic" >
+                                        Amharic                                    </option>
+                                                                    <option value="az.azerbaijani" >
+                                        Azerbaijani                                    </option>
+                                                                    <option value="be.belarusian" >
+                                        Belarusian                                    </option>
+                                                                    <option value="ka.georgian" >
+                                        Georgian                                    </option>
+                                                                    <option value="kk.kazakh" >
+                                        Kazakh                                    </option>
+                                                                    <option value="ky.kyrgyz" >
+                                        Kyrgyz                                    </option>
+                                                                    <option value="lt.lithuanian" >
+                                        Lithuanian                                    </option>
+                                                                    <option value="lv.latvian" >
+                                        Latvian                                    </option>
+                                                                    <option value="mk.macedonian" >
+                                        Macedonian                                    </option>
+                                                                    <option value="ta.tamil" >
+                                        Tamil                                    </option>
+                                                            </select>
+                        </form>
+                    </div>
+                </div>
+
+                                    <div class="surah-header surah-card">
+                        <h2>سُورَةُ ٱلْفَاتِحَةِ (Al-Fatihah)</h2>
+                        <p>Number of Ayahs: 7 | Type: Makki</p>
+                        <button id="playAll" class="btn play-btn">Play All Ayahs</button>
+                    </div>
+                    <div class="quran-text surah-card">
+                                                    <div class="ayah-card" data-ayah="1">
+                                <p class="quran-text">﻿بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ <span class="ayah-number">1</span></p>
+                                <p class="translation-text">شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے</p>
+                                <div class="audio-player">
+                                                                                                                <audio class="arabic-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" preload="none"></audio>
+                                        <audio class="translation-audio" src="https://translation-audio.com/ur.ahmedali/1-0.mp3" preload="none" style="display:none;"></audio>
+                                        <button class="btn play-btn play-ayah" data-ayah="0">Play Ayah</button>
+                                                                    </div>
+                            </div>
+                                                    <div class="ayah-card" data-ayah="2">
+                                <p class="quran-text">الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ <span class="ayah-number">2</span></p>
+                                <p class="translation-text">سب تعریفیں الله کے لیے ہیں جو سب جہانوں کا پالنے والا ہے</p>
+                                <div class="audio-player">
+                                                                                                                <audio class="arabic-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/2.mp3" preload="none"></audio>
+                                        <audio class="translation-audio" src="https://translation-audio.com/ur.ahmedali/1-1.mp3" preload="none" style="display:none;"></audio>
+                                        <button class="btn play-btn play-ayah" data-ayah="1">Play Ayah</button>
+                                                                    </div>
+                            </div>
+                                                    <div class="ayah-card" data-ayah="3">
+                                <p class="quran-text">الرَّحْمَٰنِ الرَّحِيمِ <span class="ayah-number">3</span></p>
+                                <p class="translation-text">بڑا مہربان نہایت رحم والا</p>
+                                <div class="audio-player">
+                                                                                                                <audio class="arabic-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/3.mp3" preload="none"></audio>
+                                        <audio class="translation-audio" src="https://translation-audio.com/ur.ahmedali/1-2.mp3" preload="none" style="display:none;"></audio>
+                                        <button class="btn play-btn play-ayah" data-ayah="2">Play Ayah</button>
+                                                                    </div>
+                            </div>
+                                                    <div class="ayah-card" data-ayah="4">
+                                <p class="quran-text">مَالِكِ يَوْمِ الدِّينِ <span class="ayah-number">4</span></p>
+                                <p class="translation-text">جزا کے دن کا مالک</p>
+                                <div class="audio-player">
+                                                                                                                <audio class="arabic-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/4.mp3" preload="none"></audio>
+                                        <audio class="translation-audio" src="https://translation-audio.com/ur.ahmedali/1-3.mp3" preload="none" style="display:none;"></audio>
+                                        <button class="btn play-btn play-ayah" data-ayah="3">Play Ayah</button>
+                                                                    </div>
+                            </div>
+                                                    <div class="ayah-card" data-ayah="5">
+                                <p class="quran-text">إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ <span class="ayah-number">5</span></p>
+                                <p class="translation-text">ہم تیری ہی عبادت کرتے ہیں اور تجھ ہی سے مدد مانگتے ہیں</p>
+                                <div class="audio-player">
+                                                                                                                <audio class="arabic-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/5.mp3" preload="none"></audio>
+                                        <audio class="translation-audio" src="https://translation-audio.com/ur.ahmedali/1-4.mp3" preload="none" style="display:none;"></audio>
+                                        <button class="btn play-btn play-ayah" data-ayah="4">Play Ayah</button>
+                                                                    </div>
+                            </div>
+                                                    <div class="ayah-card" data-ayah="6">
+                                <p class="quran-text">اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ <span class="ayah-number">6</span></p>
+                                <p class="translation-text">ہمیں سیدھا راستہ دکھا</p>
+                                <div class="audio-player">
+                                                                                                                <audio class="arabic-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/6.mp3" preload="none"></audio>
+                                        <audio class="translation-audio" src="https://translation-audio.com/ur.ahmedali/1-5.mp3" preload="none" style="display:none;"></audio>
+                                        <button class="btn play-btn play-ayah" data-ayah="5">Play Ayah</button>
+                                                                    </div>
+                            </div>
+                                                    <div class="ayah-card" data-ayah="7">
+                                <p class="quran-text">صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ <span class="ayah-number">7</span></p>
+                                <p class="translation-text">ان لوگوں کا راستہ جن پر تو نے انعام کیا نہ جن پر تیرا غضب نازل ہوا اور نہ وہ گمراہ ہوئے</p>
+                                <div class="audio-player">
+                                                                                                                <audio class="arabic-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/7.mp3" preload="none"></audio>
+                                        <audio class="translation-audio" src="https://translation-audio.com/ur.ahmedali/1-6.mp3" preload="none" style="display:none;"></audio>
+                                        <button class="btn play-btn play-ayah" data-ayah="6">Play Ayah</button>
+                                                                    </div>
+                            </div>
+                                            </div>
+                                    </div>
+    </div>
+
+    <footer class="mt-5">
+        <div class="container">
+            <p class="footer-text">Faizan Innovations © 2025. All Rights Reserved. Updated: Tuesday, May 20, 2025, 11:47 AM PKT</p>
+            <div class="mt-3">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Shadow Innovations</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light-theme');
+            body.classList.toggle('dark-theme');
+            const toggle = document.querySelector('.theme-toggle');
+            toggle.textContent = body.classList.contains('dark-theme') ? '☀️' : '🌙';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const playAllButton = document.getElementById('playAll');
+            const playAyahButtons = document.querySelectorAll('.play-ayah');
+            const playAllDuasButton = document.getElementById('playAllDuas');
+            const playDuaButtons = document.querySelectorAll('.play-dua');
+            let currentAyahIndex = 0;
+            let currentDuaIndex = 0;
+            let isPlayingAllAyahs = false;
+            let isPlayingAllDuas = false;
+
+            function playAyah(index) {
+                const ayahCard = document.querySelectorAll('.ayah-card')[index];
+                const arabicAudio = ayahCard.querySelector('.arabic-audio');
+                const translationAudio = ayahCard.querySelector('.translation-audio');
+                const playButton = ayahCard.querySelector('.play-ayah');
+
+                if (!arabicAudio || !translationAudio) {
+                    console.error('Audio elements missing for ayah', index);
+                    playButton.textContent = 'Play Ayah';
+                    playButton.disabled = false;
+                    if (isPlayingAllAyahs && index + 1 < document.querySelectorAll('.ayah-card').length) {
+                        currentAyahIndex++;
+                        playAyah(currentAyahIndex);
+                    }
+                    return;
+                }
+
+                playButton.textContent = 'Playing...';
+                playButton.disabled = true;
+                ayahCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                arabicAudio.play().catch(error => {
+                    console.error('Arabic audio play failed:', error);
+                    playButton.textContent = 'Play Ayah';
+                    playButton.disabled = false;
+                    if (isPlayingAllAyahs && index + 1 < document.querySelectorAll('.ayah-card').length) {
+                        currentAyahIndex++;
+                        playAyah(currentAyahIndex);
+                    }
+                });
+                arabicAudio.onended = function() {
+                    translationAudio.play().catch(error => {
+                        console.error('Translation audio play failed:', error);
+                        if (isPlayingAllAyahs && index + 1 < document.querySelectorAll('.ayah-card').length) {
+                            currentAyahIndex++;
+                            playAyah(currentAyahIndex);
+                        }
+                    });
+                    translationAudio.onended = function() {
+                        playButton.textContent = 'Play Ayah';
+                        playButton.disabled = false;
+                        if (isPlayingAllAyahs && index + 1 < document.querySelectorAll('.ayah-card').length) {
+                            currentAyahIndex++;
+                            playAyah(currentAyahIndex);
+                        }
+                    };
+                };
+            }
+
+            function playDua(index) {
+                const duaCard = document.querySelectorAll('.dua-card')[index];
+                const duaAudio = duaCard.querySelector('.dua-audio');
+                const duaTranslationAudio = duaCard.querySelector('.dua-translation-audio');
+                const playButton = duaCard.querySelector('.play-dua');
+
+                if (!duaAudio) {
+                    console.error('Dua audio missing for dua', index);
+                    playButton.textContent = 'Play Dua';
+                    playButton.disabled = false;
+                    if (isPlayingAllDuas && index + 1 < document.querySelectorAll('.dua-card').length) {
+                        currentDuaIndex++;
+                        playDua(currentDuaIndex);
+                    }
+                    return;
+                }
+
+                playButton.textContent = 'Playing...';
+                playButton.disabled = true;
+                duaCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                duaAudio.play().catch(error => {
+                    console.error('Dua audio play failed:', error);
+                    playButton.textContent = 'Play Dua';
+                    playButton.disabled = false;
+                    if (isPlayingAllDuas && index + 1 < document.querySelectorAll('.dua-card').length) {
+                        currentDuaIndex++;
+                        playDua(currentDuaIndex);
+                    }
+                });
+                duaAudio.onended = function() {
+                    if (duaTranslationAudio) {
+                        duaTranslationAudio.play().catch(error => {
+                            console.error('Dua translation audio play failed:', error);
+                            if (isPlayingAllDuas && index + 1 < document.querySelectorAll('.dua-card').length) {
+                                currentDuaIndex++;
+                                playDua(currentDuaIndex);
+                            }
+                        });
+                        duaTranslationAudio.onended = function() {
+                            playButton.textContent = 'Play Dua';
+                            playButton.disabled = false;
+                            if (isPlayingAllDuas && index + 1 < document.querySelectorAll('.dua-card').length) {
+                                currentDuaIndex++;
+                                playDua(currentDuaIndex);
+                            }
+                        };
+                    } else {
+                        playButton.textContent = 'Play Dua';
+                        playButton.disabled = false;
+                        if (isPlayingAllDuas && index + 1 < document.querySelectorAll('.dua-card').length) {
+                            currentDuaIndex++;
+                            playDua(currentDuaIndex);
+                        }
+                    }
+                };
+            }
+
+            playAllButton.addEventListener('click', function() {
+                isPlayingAllAyahs = true;
+                currentAyahIndex = 0;
+                playAyah(currentAyahIndex);
+            });
+
+            playAyahButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    isPlayingAllAyahs = false;
+                    currentAyahIndex = index;
+                    playAyah(index);
+                });
+            });
+
+            playAllDuasButton.addEventListener('click', function() {
+                isPlayingAllDuas = true;
+                currentDuaIndex = 0;
+                playDua(currentDuaIndex);
+            });
+
+            playDuaButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    isPlayingAllDuas = false;
+                    currentDuaIndex = index;
+                    playDua(index);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
